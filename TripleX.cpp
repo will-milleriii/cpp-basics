@@ -1,24 +1,24 @@
 #include <iostream> // preprocessor directive followed by a header file
 
-void PrintIntroduction()
+void PrintIntroduction(int Difficulty)
 {
     // print to terminal
 
-    std::cout << "You are a Detective trying to solve the mystery\n"; //std = namespace , :: = scope operator, cout (definied in std namespace)
+    std::cout << "You are a Detective trying to solve a Level " <<Difficulty; //std = namespace , :: = scope operator, cout (definied in std namespace)
     //std::cout << std::endl;
-    std::cout << "The thief leaves increasingly difficult combinations of numbers\n";
+    std::cout << " mystery. The thief leaves increasingly difficult combinations of numbers\n";
     
 }
 
-bool PlayGame(){
+bool PlayGame(int Difficulty){
 
-     PrintIntroduction();
+     PrintIntroduction(Difficulty);
 
     //declare variables
 
-    int FirstCode = 5;
-    int SecondCode = 2;
-    int ThirdCode = 4;
+    int FirstCode = rand() % Difficulty + 1;
+    int SecondCode = rand() % Difficulty + 1;
+    int ThirdCode = rand() % Difficulty + 1;
 
     int CodeSum = FirstCode + SecondCode + ThirdCode;
     int CodeProduct = FirstCode * SecondCode * ThirdCode;
@@ -48,10 +48,10 @@ bool PlayGame(){
     //conditional if player guesses correctly or incorrectly
     if (GuessSum == CodeSum && GuessProd == CodeProduct)
     {
-        std::cout << "You solved the puzzle!";
+        std::cout << "\nYou solved the puzzle! You move to the next level\n";
         return true;
     } else {
-        std::cout << "Sorry that is the wrong answer. The thief got away...";
+        std::cout << "\nSorry that is the wrong answer. Try again before the thief gets away!";
         return false;
     }
 
@@ -63,14 +63,27 @@ bool PlayGame(){
 
 int main()
 {
-    while (true)
+
+    srand(time(NULL));
+
+    int LevelDifficulty = 1;
+
+    int const maxLevelDifficulty= 5;
+
+    while (LevelDifficulty <= maxLevelDifficulty) //loop until all levels are completed
     {
-        bool LevelComplete = PlayGame();
+        bool LevelComplete = PlayGame(LevelDifficulty);
         std::cin.clear();
         std::cin.ignore();
+
+        if (LevelComplete)
+        {
+            //need to increase difficulty of puzzle
+            ++LevelDifficulty;
+
+        }
+        
     }
-    
-   
-    
+   std::cout << "Congratulations! You solved all the clues and captured the thief!"; 
     return 0;
 }
